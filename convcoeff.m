@@ -42,9 +42,14 @@ for i=1:length(varargin)
     end
 end
 if ~exist('type', 'var'),   type = 'draglift';                          end % default is (Cx, Cz) to (Cdrag, Clift)
-if ~exist('sina', 'var'),   sina = @sin;                                end
-if ~exist('cosa', 'var'),   cosa = @cos;                                end
 
+
+if ~exist('sina', 'var') && ~exist('cosa', 'var')
+    sina = @sin;
+    cosa = @cos;
+else
+    assert(exist('sina', 'var') && exist('cosa', 'var'), 'Both sine and cosine functions must be provided, or neither.');
+end
 
 if isa(Cx_drag, 'function_handle')
     output = 'function';
