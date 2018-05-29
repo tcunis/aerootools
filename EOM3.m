@@ -44,7 +44,7 @@ end
 
 methods
     function obj = EOM3
-        obj.linear = @(varargin) linss.linearize(@obj.f, varargin{:});
+        obj.linear = {};
     end
     
     function func = f(obj, varargin)
@@ -63,7 +63,9 @@ methods
     end
     
     function J = jacobian(obj, varargin)
-        obj.linear = obj.linear(varargin{:});
+        if isempty(obj.linear)
+            obj.linear = linss.linearize(obj.f, varargin{:});
+        end
         
         J = jacobian(obj.linear);
     end
@@ -116,6 +118,10 @@ methods (Static)
     
     function in = F(U)
         in = U(2,:);
+    end
+    
+    function out = theta(X)
+        out = EOM3.gamma(X) + EOM3.alpha(X);
     end
 end
 
