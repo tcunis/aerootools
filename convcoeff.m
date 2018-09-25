@@ -37,6 +37,7 @@ for i=1:length(varargin)
     if ~exist('type', 'var') && ischar(arg), type = arg;
     elseif ~exist('alphas', 'var') && isnumeric(arg) || isa(arg, 'Angle')
                                                                alphas = arg;
+    elseif ~exist('alpha', 'var') && isa(arg,'polynomial'),     alpha = arg;
     elseif ~exist('sina', 'var') && isa(arg, 'function_handle'), sina = arg;
     elseif ~exist('cosa', 'var') && isa(arg, 'function_handle'), cosa = arg;
     end
@@ -53,6 +54,12 @@ end
 
 if isa(Cx_drag, 'function_handle')
     output = 'function';
+elseif isa(Cx_drag, 'polynomial') || isa(Cx_drag, 'splinemodel')
+    output = 'polynomial';
+    
+    if ~exist('alpha','var')
+        alpha = pvar('alpha');
+    end
 else
     output = 'array';
     
@@ -76,6 +83,13 @@ switch type
                 Cdrag = - Cz.*sina(alphas) ...
                         - Cx.*cosa(alphas);
             
+            case 'polynomial'
+                Clift = - Cz*cosa(alpha) ...
+                        + Cx*sina(alpha);
+                    
+                Cdrag = - Cz*sina(alpha) ...
+                        - Cx*cosa(alpha);
+
             %case 'function'
             otherwise
                 % aerodynamic lift coefficient, force negative air z-axis
@@ -104,6 +118,13 @@ switch type
                     
                 Cx = + Clift.*sina(alphas) ...
                      - Cdrag.*cosa(alphas);
+            
+            case 'polynomial'
+                Cz = - Clift*cosa(alpha) ...
+                     - Cdrag*sina(alpha);
+                    
+                Cx = + Clift*sina(alpha) ...
+                     - Cdrag*cosa(alpha);
             
             %case 'function'
             otherwise
