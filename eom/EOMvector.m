@@ -54,21 +54,24 @@ methods
         
         switch tf
             case 0
-                obj.v = default;
+                argin = default;
             case 1
-                obj.v = varargin{1}.v;
+                argin = varargin{1}.v;
             case 2
-                obj.v = varargin{1};
+                argin = varargin{1};
             case 3
-                obj.v = varargin{1}';
+                argin = varargin{1}';
             case 4
-                obj.v = vertcat(varargin{:});
+                argin = vertcat(varargin{:});
             otherwise
                 error('Unexpected number of variables (%g, expected %g).', ...
                                 max(length(varargin),length(varargin{1})), ...
                                                           length(default)  ...
                 );
         end
+        
+        default = default + zeros(1,size(argin,2));
+        obj.v = [argin; default(size(argin,1)+1:end,:)];
     end
     
     function V = double(obj)
