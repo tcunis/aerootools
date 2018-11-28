@@ -125,9 +125,9 @@ methods
     
         acc =                                                           ...
         (                                                               ...
-            obj.thrust(X,U,varargin{:}).*cos(alpha(X))                                          ...
+            obj.thrust(X,U,varargin{:}).*obj.cos(alpha(X))                                          ...
             - 0.5*rho*V(X).^2*S.*obj.Cdrag(X,U,varargin{:})                           ...
-            - m*g*sin(gamma(X))                                         ...
+            - m*g*obj.sin(gamma(X))                                         ...
         )/m;    
     end
     
@@ -140,10 +140,10 @@ methods
     
         ang =                                                           ...
         (                                                               ...
-            obj.thrust(X,U,varargin{:}).*sin(alpha(X))                                          ...
+            obj.thrust(X,U,varargin{:}).*obj.sin(alpha(X))                                          ...
             + 0.5*rho*V(X).^2*S.*obj.Clift(X,U,varargin{:})                           ...
-            - m*g*cos(gamma(X))                                         ...
-        )./(V(X)*m);
+            - m*g*obj.cos(gamma(X))                                         ...
+        ).*obj.Vinv(X)/m;
     end
 
     function ang = qdot(obj, X, U, varargin)
@@ -161,15 +161,15 @@ methods
     function vel = londot(~, X, varargin)
         % change of longitudinal position
         % in earth-fixed axis system
-        vel = V(X)*cos(gamma(X));
+        vel = V(X)*obj.cos(gamma(X));
     end
     
     function vel = altdot(~, X, varargin)
         % change of altitude
-        vel = V(X)*sin(gamma(X));
+        vel = V(X)*obj.sin(gamma(X));
     end
 end
-    
+
 methods (Access=protected)
     function force = thrust(~, ~, U, varargin)
     % thrust force
@@ -189,7 +189,12 @@ methods (Access=protected)
     % normalized pitch rate
         c   = obj.AC.c;
         
-        ang = q(X)*c/V(X);
+        ang = q(X)*c.*Vinv(X);
+    end
+    
+    function iv = Vinv(obj, X, varargin)
+    % inverse air speed
+        iv = obj.inv(V(X));
     end
 end
 
@@ -225,5 +230,25 @@ methods
         rQ = observable(obj.linear,v);
     end
 end
-   
+
+methods (Static,Access=protected)
+    function y = sin(x)
+        % Sine of argument in radians
+        % override for polynomial EOM
+        y = sin(x);
+    end
+    
+    function y = cos(x)
+        % Cosine of argument in radians
+        % override for polynomial EOM
+        y = cos(x);
+    end
+    
+    function y = inv(x,~)
+        % Array inverse
+        % override for polynomial EOM
+        y = 1./x;
+    end
+end
+
 end
