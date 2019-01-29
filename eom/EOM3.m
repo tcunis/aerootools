@@ -158,15 +158,15 @@ methods
         ang = q(X);
     end
     
-    function vel = londot(~, X, varargin)
+    function vel = londot(obj, X, varargin)
         % change of longitudinal position
         % in earth-fixed axis system
-        vel = V(X)*obj.cos(gamma(X));
+        vel = V(X).*obj.cos(gamma(X));
     end
     
-    function vel = altdot(~, X, varargin)
+    function vel = altdot(obj, X, varargin)
         % change of altitude
-        vel = V(X)*obj.sin(gamma(X));
+        vel = V(X).*obj.sin(gamma(X));
     end
 end
 
