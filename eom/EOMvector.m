@@ -79,6 +79,26 @@ methods
         V = obj.v;
     end
     
+    function V = plus(A,B)
+        % See PLUS
+        V = double(A) + (+B);
+    end
+    
+    function V = minus(A,B)
+        % See MINUS
+        V = double(A) + (-B);
+    end
+    
+    function V = uplus(A)
+        % See UPLUS
+        V = +double(A);
+    end
+    
+    function V = uminus(A)
+        % See UMINUS
+        V = -double(A);
+    end
+    
     function l = length(obj)
         % See LENGTH
         l = length(obj.v);
