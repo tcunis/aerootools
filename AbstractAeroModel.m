@@ -9,25 +9,33 @@ classdef (Abstract) AbstractAeroModel
 % * Changed:    2019-03-15
 %
 %%    
-    
+
 methods (Abstract)
-    CX = Cx(alpha, varargin);
-    CZ = Cz(alpha, varargin);
-    CM = Cm(alpha, varargin);
-    CY = Cy(alpha, varargin);
-    CL = Cl(alpha, varargin);
-    CN = Cn(alpha, varargin);
+    CX = Cx(obj, alpha, varargin);
+    CZ = Cz(obj, alpha, varargin);
+    CM = Cm(obj, alpha, varargin);
+    CY = Cy(obj, alpha, varargin);
+    CL = Cl(obj, alpha, varargin);
+    CN = Cn(obj, alpha, varargin);
     
-    Cl = Clift(alpha, varargin);
-    Cd = Cdrag(alpha, varargin);
+    Cl = Clift(obj, alpha, varargin);
+    Cd = Cdrag(obj, alpha, varargin);
+    
+    N = nargin(obj);
 end
 
-methods (Static, Access=protected)     
-    function argin = extend(argin)
+methods (Access=protected)     
+    function argin = extend(obj, argin)
     % Extends input parameters to 6-DOF case.
 
-        if length(argin) < 5
+        if length(argin) < nargin(obj)
+            if length(argin) > 2
+                % rates              p     q      r
+                argin = [argin(1:2) {0} argin(3) {0} argin(4:end)];
+            end
+            
             % longitudinal case
+            %           a      b   x     e      z  [ p  q  r ]
             argin = [argin(1) {0} {0} argin(2) {0} argin(3:end)];
         end
     end

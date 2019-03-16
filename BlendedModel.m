@@ -66,20 +66,26 @@ methods
         
         CN = obj.blended(@Cn,varargin{:});
     end
+    
+    function N = nargin(obj)
+        % number of inputs
+        % sub-models + blending parameter
+        N = nargin(obj.pre) + 1;
+    end
 end
 
-methods (Static, Access=protected)
-    function argin = extend(argin)
+methods (Access=protected)
+    function argin = extend(obj, argin)
         % Override AbstractAeroModel.extend
         eps = {0};
         
-        if length(argin) == 6
+        if length(argin) == nargin(obj)
             return; %nothing to do
-        elseif length(argin) == 3
-            eps = argin(3);
-            argin = extend@AbstractAeroModel(argin(1:2));
+        elseif length(argin) < nargin(obj.pre)
+            eps = argin(end);
+            argin = extend@AbstractAeroModel(obj,argin(1:end-1));
         else
-            argin = extend@AbstractAeroModel(argin);
+            argin = extend@AbstractAeroModel(obj,argin);
         end
         
         % if length(argin) < 6
@@ -91,7 +97,7 @@ methods (Access=private)
     function coeff = blended(obj, Chan, alpha, varargin)
         % Evaluate blended coefficient.
                 
-        eps = varargin{5};
+        eps = varargin{end};
 
         h = 1./(1 + exp(-4*(alpha-obj.alpha0)/(obj.mu+eps)));
         

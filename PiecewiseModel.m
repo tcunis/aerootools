@@ -52,6 +52,12 @@ methods
         
         CN = obj.piecewise(@Cn,varargin{:});
     end
+    
+    function N = nargin(obj)
+        % number of inputs
+        % piecewise sub-models
+        N = nargin(obj.pre);
+    end
 end
 
 methods (Access=private)
