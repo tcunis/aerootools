@@ -140,14 +140,19 @@ methods (Access=protected)
         ang = diag([b c b])*omega(X)/VA(X);
     end
     
-    function RF = Rf(obj, X, varargin)
-        % aerodynamic/thrust forces body axis system
+    function RF = RAf(obj, X, varargin)
+        % aerodynamic forces body axis system
         rho = obj.AC.rho;
         S   = obj.AC.S;
     
+        RF = 0.5*rho*S*VA(X)^2*obj.Cr(X,varargin{:});
+    end
+    
+    function RF = Rf(obj, X, varargin)
+        % aerodynamic/thrust forces body axis system
         F = obj.thrust(X,varargin{:});
         
-        RF = 0.5*rho*S*VA(X)^2*obj.Cr(X,varargin{:}) + [F; 0; 0];
+        RF = obj.RAf(X,varargin{:}) + [F; 0; 0];
     end
 
     function QF = Qf(obj, X, varargin)
@@ -232,14 +237,14 @@ methods (Access=protected)
         % Drag coefficient -- implementing EOM3.Cdrag
         CR = obj.Cr(X,varargin{:});
         
-        CD = -CR(3,:).*sin(alpha(X)) - CR(1,:).*cosa(alpha(X));
+        CD = -CR(3,:).*obj.sin(alpha(X)) - CR(1,:).*obj.cos(alpha(X));
     end
     
     function CL = Clift(obj, X, varargin)
         % Lift coefficient -- implementing EOM3.Clift
         CR = obj.Cr(X, varargin{:});
         
-        CL = -CR(3,:).*cos(alpha(X)) + CR(1,:).*sin(X(alpha));
+        CL = -CR(3,:).*obj.cos(alpha(X)) + CR(1,:).*obj.sin(X(alpha));
     end
     
     function CM = Cm(obj, varargin)
