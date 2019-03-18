@@ -1,4 +1,4 @@
-classdef (Abstract) EOM3 < handle
+classdef (Abstract) EOM3 < RealFunctions %handle
 % 3-degrees-of-freedom (longitudinal) equations of motion.
 %
 %% About
@@ -232,23 +232,6 @@ methods
 end
 
 methods (Static,Access=protected)
-    function y = sin(x)
-        % Sine of argument in radians
-        % override for polynomial EOM
-        y = sin(x);
-    end
-    
-    function y = cos(x)
-        % Cosine of argument in radians
-        % override for polynomial EOM
-        y = cos(x);
-    end
-    
-    function y = inv(x,~)
-        % Array inverse
-        % override for polynomial EOM
-        y = 1./x;
-    end
 end
 
 end

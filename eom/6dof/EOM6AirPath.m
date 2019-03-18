@@ -1,4 +1,4 @@
-classdef EOM6AirPath < EOMvector
+classdef EOM6AirPath < EOMvector & RealFunctions
 % Air path vector for 6-DOF equations of motion of the Cumulus aircraft.
 %
 %% About
@@ -19,7 +19,11 @@ end
 
 methods
     function obj = EOM6AirPath(Vf, Phi)
-        if size(Vf,2) > 1
+        if nargin == 1
+            % copy
+            air = Vf;
+            
+        elseif size(Vf,2) > 1
             air = zeros(size(Vf));
             for i=1:length(Vf)
                 air(:,i) = g2f(EOM6Attitude(Phi(:,i)))'*Vf(:,i);
@@ -43,16 +47,24 @@ methods
         c = index(V,3);
     end
     
-    function vel = norm(V)
-        vel = sqrt(uA(V).^2 + vA(V).^2 + wA(V).^2);
+    function vel2 = norm2(V)
+        vel2 = uA(V).^2 + vA(V).^2 + wA(V).^2;
     end
     
-    function ang = gamma(V)
-        ang = asin(-wA(V)./norm(V));
+    function ang = gamma(obj)
+        ang = obj.asin(-wA(obj).*obj.invnorm(obj));
     end
     
-    function ang = chi(V)
-        ang = atan2(vA(V), uA(V));
+    function ang = chi(obj)
+        ang = obj.atan2(vA(obj), uA(obj));
+    end
+    
+    function vel = norm(obj)
+        vel = obj.sqrt(norm2(obj));
+    end
+    
+    function ivel = invnorm(obj)
+        ivel = obj.invsqrt(norm2(obj));
     end
     
     function ang = mu(V)

@@ -1,4 +1,4 @@
-classdef EOM6Velocity < EOMvector
+classdef EOM6Velocity < EOMvector & RealFunctions
 % Velocity vector for 6-DOF equations of motion of the Cumulus aircraft.
 %
 %% About
@@ -35,16 +35,24 @@ methods
         c = index(V,3);
     end
     
-    function vel = norm(V)
-        vel = sqrt(u(V).^2 + v(V).^2 + w(V).^2);
+    function vel2 = norm2(V)
+        vel2 = u(V).^2 + v(V).^2 + w(V).^2;
+    end
+        
+    function ang = alpha(obj)
+        ang = obj.atan2(w(obj), u(obj));
     end
     
-    function ang = alpha(V)
-        ang = atan2(w(V), u(V));
+    function ang = beta(obj)
+        ang = obj.asin(v(obj).*obj.invnorm(obj));
     end
     
-    function ang = beta(V)
-        ang = asin(v(V)./norm(V));
+    function vel = norm(obj)
+        vel = obj.sqrt(norm2(obj));
+    end
+    
+    function ivel = invnorm(obj)
+        ivel = obj.invsqrt(norm2(obj));
     end
 end
 

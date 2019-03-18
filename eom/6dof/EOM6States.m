@@ -74,6 +74,16 @@ methods
         aux = norm(X.vel);
     end
     
+    function aux = VA2(X)
+        % Squared air speed
+        aux = norm2(X.vel);
+    end
+    
+    function aux = invVA(X)
+        % Inverse air speed
+        aux = invnorm(X.vel);
+    end
+    
     function aux = alpha(X)
         % Angle of attack -- overriding EOM3States.alpha
         aux = alpha(X.vel);

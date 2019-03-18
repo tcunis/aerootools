@@ -137,7 +137,7 @@ methods (Access=protected)
         b = obj.AC.b;
         c = obj.AC.c;
         
-        ang = diag([b c b])*omega(X)/VA(X);
+        ang = diag([b c b])*omega(X)*invVA(X)/2;
     end
     
     function RF = RAf(obj, X, varargin)
@@ -145,7 +145,7 @@ methods (Access=protected)
         rho = obj.AC.rho;
         S   = obj.AC.S;
     
-        RF = 0.5*rho*S*VA(X)^2*obj.Cr(X,varargin{:});
+        RF = 0.5*rho*S*VA2(X)*obj.Cr(X,varargin{:});
     end
     
     function RF = Rf(obj, X, varargin)
@@ -162,7 +162,7 @@ methods (Access=protected)
         b   = obj.AC.b;
         c   = obj.AC.c;
         
-        QF = 0.5*rho*S*VA(X)^2*diag([b c b])*obj.Cq(X,varargin{:});
+        QF = 0.5*rho*S*VA2(X)*diag([b c b])*obj.Cq(X,varargin{:});
     end
     
     function RA = Ra(obj, X, varargin)
