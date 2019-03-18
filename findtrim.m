@@ -33,7 +33,7 @@ end
 
 if ~exist('opt', 'var')
     opt = [];
-elseif ~exist('bnds)', 'var')
+elseif ~exist('bnds', 'var')
     bnds = zeros(0,2);
 else
     assert(size(bnds,2) == 2, 'Bounds must be k-by-2 matrix [lb ub].');
