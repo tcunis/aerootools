@@ -59,7 +59,12 @@ methods (Access=private)
         M(4,2) = -obj.sin(a);
 
         I = [k==1 true k==2 true k==3];
-        M = M(I,I);
+        
+        % multipoly does not support logical indexing...
+        idx = 1:length(M);
+        idx = idx(I);
+        
+        M = M(idx,idx);
     end
 end
     
