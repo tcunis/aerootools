@@ -24,7 +24,7 @@ methods (Static,Access=protected)
     function y = sec(x)
         % Secant partial sum in radians
         % overriding RealFunctions.sec
-        y = x + x.^2/2 + 5*x.^4/24;
+        y = 1 + x.^2/2 + 5*x.^4/24;
     end
     
     %% Trigonometric inverses
