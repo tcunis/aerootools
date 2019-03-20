@@ -35,8 +35,14 @@ methods
         c = index(V,3);
     end
     
-    function vel2 = norm2(V)
-        vel2 = u(V).^2 + v(V).^2 + w(V).^2;
+    function vel2 = norm2(V,proj)
+        if nargin > 1 && proj
+            % Projection onto longitudinal plane
+            vel2 = u(V).^2 + w(V).^2;
+        else
+            % 3D vector norm
+            vel2 = u(V).^2 + v(V).^2 + w(V).^2;
+        end
     end
         
     function ang = alpha(obj)
@@ -44,15 +50,15 @@ methods
     end
     
     function ang = beta(obj)
-        ang = obj.asin(v(obj).*obj.invnorm(obj));
+        ang = obj.asin(v(obj).*invnorm(obj));
     end
     
-    function vel = norm(obj)
-        vel = obj.sqrt(norm2(obj));
+    function vel = norm(obj,varargin)
+        vel = obj.sqrt(norm2(obj,varargin{:}));
     end
     
-    function ivel = invnorm(obj)
-        ivel = obj.invsqrt(norm2(obj));
+    function ivel = invnorm(obj,varargin)
+        ivel = obj.invsqrt(norm2(obj,varargin{:}));
     end
 end
 
