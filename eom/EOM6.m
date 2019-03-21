@@ -202,7 +202,7 @@ methods
         %
         I = obj.AC.I;
         
-        ang = I\obj.Qr(varargin{:});
+        ang = I^-1*obj.Qr(varargin{:});
     end
 
     function ang = Phidot(~, X, varargin)
