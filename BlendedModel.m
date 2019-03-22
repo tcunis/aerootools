@@ -81,7 +81,7 @@ methods (Access=protected)
         
         if length(argin) == nargin(obj)
             return; %nothing to do
-        elseif length(argin) < nargin(obj.pre)
+        elseif length(argin) > 2 && length(argin) < nargin(obj.pre)
             eps = argin(end);
             argin = extend@AbstractAeroModel(obj,argin(1:end-1));
         else
