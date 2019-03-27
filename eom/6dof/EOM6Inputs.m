@@ -21,7 +21,7 @@ methods
     function obj = EOM6Inputs(varargin)
         if nargin == 1 && isa(varargin{1},'EOM6Inputs')
             % nothing to do
-        elseif EOM3Inputs.check([],[],varargin{:}) > 0
+        elseif any(EOM3Inputs.check([],[],varargin{:}) == [1,2])
             % [eta T]
             U3 = EOM3Inputs(varargin{:});
             
@@ -29,7 +29,7 @@ methods
         end
         
         % 6-DOF input vector [xi eta zi | F].
-        obj@EOMvector(zeros(4,1),varargin{:});
+        obj@EOMvector([],varargin{:});
     end
     
     function in = xi(U)
@@ -54,10 +54,10 @@ methods
 end
 
 methods (Static, Access=protected)
-    function [tf,default] = check(obj, default, varargin)
+    function [tf,default] = check(obj, ~, varargin)
         % Overriding EOM3Inputs.check
         
-        [tf,default] = check@EOMvector(obj,default,varargin{:});
+        [tf,default] = check@EOMvector(obj,zeros(4,1),varargin{:});
     end
 end
 

@@ -25,7 +25,7 @@ methods
             
         elseif size(Vf,2) > 1
             air = zeros(size(Vf));
-            for i=1:length(Vf)
+            for i=1:size(Vf,2)
                 air(:,i) = g2f(EOM6Attitude(Phi(:,i)))'*Vf(:,i);
             end
         else
