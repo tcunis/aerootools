@@ -24,7 +24,7 @@ methods (Static,Access=protected)
     function y = sec(x)
         % Secant of argument in radians
         % override for polynomial EOM
-        y = sec(x);
+        y = 1./cos(x);
     end
     
     %% Trigonometric inverses
