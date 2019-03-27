@@ -99,6 +99,11 @@ methods
         V = -double(A);
     end
     
+    function V = times(A,B)
+        % See TIMES
+        V = double(A).*double(B);
+    end
+    
     function l = length(obj)
         % See LENGTH
         l = length(obj.v);
@@ -113,6 +118,11 @@ methods
     function E = index(obj,i)
         % Index function, E = obj(i).
         E = obj.v(i,:);
+    end
+    
+    function i = end(obj,k,n)
+        % See END
+        i = size(obj.v,k);
     end
     
     function E = subsref(obj,s)
