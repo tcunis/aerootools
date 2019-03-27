@@ -22,6 +22,19 @@ properties (Abstract,Access=protected)
     air;
 end
 
+methods (Static)
+    function X = wind2body(V, alpha, beta, varargin)
+        % convert wind axis to (V,alpha,beta) to body axis (u,v,w) system.
+        
+        X = [
+            V*cos(alpha)*cos(beta)
+            V*sin(beta)
+            V*sin(alpha)*cos(beta)
+            vertcat(varargin{:})
+        ];
+    end
+end
+
 methods
     function obj = Abstract6States(varargin)
         if nargin == 1 && isa(varargin{1},'Abstract6States')
