@@ -25,7 +25,7 @@ methods
             % [eta T]
             U3 = EOM3Inputs(varargin{:});
             
-            varargin = {[[0; eta(U3); 0]; T(U3)]};
+            varargin = {[[0; eta(U3); 0]; F(U3)]};
         end
         
         % 6-DOF input vector [xi eta zi | F].
