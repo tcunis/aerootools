@@ -199,9 +199,16 @@ methods (Access=protected)
 end
 
 methods
+    function obj = linearize(obj, varargin)
+        % Create linearized system model.
+        
+        obj.linear = linss.linearize(@obj.f, varargin{:});
+    end
+    
     function J = jacobian(obj, varargin)
         if isempty(obj.linear)
-            obj.linear = linss.linearize(@obj.f, varargin{:});
+            warning('Linearized system model not created yet. Call EOM3.linearize first for increased speed.');
+            obj = linearize(obj, varargin{:});
             
             J = obj.linear.A;
         else
@@ -212,7 +219,7 @@ methods
     
     function rQ = ctrrank(obj, v, varargin)
         if isempty(obj.linear)
-            obj.linear = linss.linearize(@obj.f, varargin{:});
+            obj = linearize(obj, varargin{:});
         else
             obj.linear = obj.linear(varargin{:});
         end
@@ -222,7 +229,7 @@ methods
     
     function rQ = obsrank(obj, v, varargin)
         if isempty(obj.linear)
-            obj.linear = linss.linearize(@obj.f, varargin{:});
+            obj = linearize(obj, varargin{:});
         else
             obj.linear = obj.linear(varargin{:});
         end
