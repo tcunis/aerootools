@@ -231,8 +231,24 @@ methods
     end
 end
 
+%% Implement inherited EOM3 interface
+methods
+    function vel = altdot(obj, varargin)
+        % Overwrite EOM3.altdot
+        VKg = obj.xgdot(varargin{:});
+        
+        vel = -VKg(3);
+    end
+    
+    function vel = londot(obj, varargin)
+        % Overwrite EOM3.londot
+        VKg = obj.xgdot(varargin{:});
+        
+        vel = VKg(1);
+    end
+end
+
 methods (Access=protected)
-    %% Implement inherited EOM3 interface
     function CD = Cdrag(obj, X, varargin)
         % Drag coefficient -- implementing EOM3.Cdrag
         CR = obj.Cr(X,varargin{:});
