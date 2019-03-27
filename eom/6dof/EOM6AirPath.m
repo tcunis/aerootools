@@ -52,7 +52,7 @@ methods
     end
     
     function ang = gamma(obj)
-        ang = obj.asin(-wA(obj).*obj.invnorm(obj));
+        ang = obj.asin(-wA(obj).*invnorm(obj));
     end
     
     function ang = chi(obj)

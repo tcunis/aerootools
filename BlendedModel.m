@@ -101,8 +101,8 @@ methods (Access=private)
 
         h = 1./(1 + exp(-4*(alpha-obj.alpha0)/(obj.mu+eps)));
         
-        p1 = Chan(obj.pre, alpha, varargin{1:4});
-        p2 = Chan(obj.post,alpha, varargin{1:4});
+        p1 = Chan(obj.pre, alpha, varargin{1:end-1});
+        p2 = Chan(obj.post,alpha, varargin{1:end-1});
         coeff = (1-h).*p1 + h.*p2;
     end
 end
