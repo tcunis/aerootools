@@ -140,6 +140,22 @@ methods
         % Overriding EOM3States.theta
         aux = theta(X.att);
     end
+    
+    %% Extended EOM6 interface
+    function st = phi(X)
+        % Bank angle.
+        st = phi(X.att);
+    end
+    
+    function st = p(X)
+        % Roll rate.
+        st = p(X.rate);
+    end
+    
+    function st = r(X)
+        % Yaw rate.
+        st = r(X.rate);
+    end
 end
 
 methods (Static, Access=protected)
