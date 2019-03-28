@@ -18,7 +18,7 @@ methods
     function obj = EOM6Output(varargin)
         if nargin == 1 && isa(varargin{1},'EOM6Output')
             % nothing to do
-        elseif any(EOM3Output.check([],[],varargin{:}) == [1,2])
+        elseif any(EOM3Output.check([],[],varargin{:}) == [1,2,4])
             % [lon alt]
             Y3 = EOM3Output(varargin{:});
             

@@ -21,7 +21,7 @@ methods
     function obj = EOM6Inputs(varargin)
         if nargin == 1 && isa(varargin{1},'EOM6Inputs')
             % nothing to do
-        elseif any(EOM3Inputs.check([],[],varargin{:}) == [1,2])
+        elseif any(EOM3Inputs.check([],[],varargin{:}) == [1,2,4])
             % [eta T]
             U3 = EOM3Inputs(varargin{:});
             
