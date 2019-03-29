@@ -50,6 +50,12 @@ methods
         % Overriding EOM3Output.alt
         out = -zg(Y);
     end
+    
+    %% Extended EOM6 interface
+    function out = lat(Y)
+        % Lateral position in ENU.
+        out = yg(Y);
+    end
 end
 
 methods (Static, Access=protected)

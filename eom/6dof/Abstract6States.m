@@ -147,6 +147,11 @@ methods
         st = phi(X.att);
     end
     
+    function st = psi(X)
+        % Heading angle.
+        st = psi(X.att);
+    end
+    
     function st = p(X)
         % Roll rate.
         st = p(X.rate);
