@@ -1,4 +1,4 @@
-classdef BasicParameters < EOMvector
+classdef BasicParameters < eompkg.EOMvector
 % Basic parameters for equations of motion.
 %
 %% About
@@ -16,7 +16,7 @@ end
 methods
     function obj = BasicParameters(varargin)
         % Default parameters.
-        obj@EOMvector([],varargin{:});
+        obj@eompkg.EOMvector([],varargin{:});
     end
 end
 

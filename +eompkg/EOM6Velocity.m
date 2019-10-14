@@ -1,4 +1,4 @@
-classdef EOM6Velocity < EOMvector & RealFunctions
+classdef EOM6Velocity < eompkg.EOMvector & eompkg.RealFunctions
 % Velocity vector for 6-DOF equations of motion of the Cumulus aircraft.
 %
 %% About
@@ -20,7 +20,7 @@ end
 methods
     function obj = EOM6Velocity(varargin)
         % velocity vector [uA vA wA]
-        obj@EOMvector([1; zeros(2,1)],varargin{:});
+        obj@eompkg.EOMvector([1; zeros(2,1)],varargin{:});
     end
     
     function c = u(V)

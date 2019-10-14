@@ -1,4 +1,4 @@
-classdef (Abstract) EOM3 < RealFunctions %handle
+classdef (Abstract) EOM3 < eompkg.RealFunctions %handle
 % 3-degrees-of-freedom (longitudinal) equations of motion.
 %
 %% About
@@ -94,24 +94,24 @@ methods (Static)
     function states = X(varargin)
         % Longitudinal state vector
         % X = [V gamma q alpha]
-        states = EOM3States(varargin{:});
+        states = eompkg.EOM3States(varargin{:});
     end
     
     function inputs = U(varargin)
         % Longitudinal input vector
         % U = [eta F]
-        inputs = EOM3Inputs(varargin{:});
+        inputs = eompkg.EOM3Inputs(varargin{:});
     end
     
     function par = mu(varargin)
         % Basic parameters
-        par = BasicParameters(varargin{:});
+        par = eompkg.BasicParameters(varargin{:});
     end
     
     function output = Y(varargin)
         % Longitudinal outputs
         % Y = d[lon alt]/dt
-        output = EOM3Output(varargin{:});
+        output = eompkg.EOM3Output(varargin{:});
     end
 end
 

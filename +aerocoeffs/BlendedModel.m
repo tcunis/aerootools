@@ -1,4 +1,4 @@
-classdef (Abstract) BlendedModel < AbstractAeroModel & AeroXZModel
+classdef (Abstract) BlendedModel < aerocoeffs.AbstractAeroModel & aerocoeffs.AeroXZModel
 % Abstract super-class of blended aerodynamic models.
 %
 %% About

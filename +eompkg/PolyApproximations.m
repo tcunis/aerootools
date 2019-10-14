@@ -1,4 +1,4 @@
-classdef (Abstract) PolyApproximations < RealFunctions
+classdef (Abstract) PolyApproximations < eompkg.RealFunctions
 % Trigonometric functions.
 
 methods (Static,Access=protected)

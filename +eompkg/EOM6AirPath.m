@@ -1,4 +1,4 @@
-classdef EOM6AirPath < EOMvector & RealFunctions
+classdef EOM6AirPath < eompkg.EOMvector & eompkg.RealFunctions
 % Air path vector for 6-DOF equations of motion of the Cumulus aircraft.
 %
 %% About
@@ -26,13 +26,13 @@ methods
         elseif size(Vf,2) > 1
             air = zeros(size(Vf));
             for i=1:size(Vf,2)
-                air(:,i) = g2f(EOM6Attitude(Phi(:,i)))'*Vf(:,i);
+                air(:,i) = g2f(eompkg.EOM6Attitude(Phi(:,i)))'*Vf(:,i);
             end
         else
             air = g2f(Phi)'*double(Vf);
         end
         
-        obj@EOMvector(zeros(3,1), air);
+        obj@eompkg.EOMvector(zeros(3,1), air);
     end
     
     function c = uA(V)

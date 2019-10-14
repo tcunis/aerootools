@@ -1,4 +1,4 @@
-classdef (Abstract) Abstract6States < EOMvector & EOM3States
+classdef (Abstract) EOM6AbstractStates < eompkg.EOMvector & eompkg.EOM3States
 % Abstract 6-DOF states.
 %
 %% About
@@ -36,18 +36,18 @@ methods (Static)
 end
 
 methods
-    function obj = Abstract6States(varargin)
+    function obj = EOM6AbstractStates(varargin)
         if nargin == 1 && isa(varargin{1},'Abstract6States')
             % nothing to do
-        elseif EOM3States.check([],[],varargin{:}) > 0
+        elseif eompkg.EOM3States.check([],[],varargin{:}) > 0
             % [VA gamma q alpha]
-            X3 = EOM3States(varargin{:});
+            X3 = eompkg.EOM3States(varargin{:});
 
             varargin = {[[V(X3)*cos(alpha(X3)); 0; V(X3)*sin(alpha(X3))]; [0; q(X3); 0]; [0; theta(X3); 0]]};
         end
         
         % 6-DOF state vector [vA | omega | Phi]
-        obj@EOMvector([], varargin{:});        
+        obj@eompkg.EOMvector([], varargin{:});        
     end
     
     %% States
@@ -167,10 +167,10 @@ methods (Static, Access=protected)
     function [tf,default] = check(obj, ~, varargin)
         % Overriding EOM3States.check
         if isempty(obj)
-            obj = EOM6States;
+            obj = eompkg.EOM6States;
         end
         
-        [tf,default] = check@EOMvector(obj,[1; zeros(8,1)],varargin{:});
+        [tf,default] = check@eompkg.EOMvector(obj,[1; zeros(8,1)],varargin{:});
     end
 end
 

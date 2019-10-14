@@ -113,7 +113,7 @@ methods (Static)
         % X = [uA vA wA | p q r | Phi Theta Psi]
         %
         % Overriding EOM3.X
-        states = EOM6States(varargin{:});
+        states = eompkg.EOM6States(varargin{:});
     end
     
     function inputs = U(varargin)
@@ -121,13 +121,13 @@ methods (Static)
         % U = [xi eta zeta | F]
         %
         % Overriding EOM3.U
-        inputs = EOM6Inputs(varargin{:});
+        inputs = eompkg.EOM6Inputs(varargin{:});
     end
     
     function output = Y(varargin)
         % 6-DOF outputs
         % Y = d[xg yg zg]/dt
-        output = EOM6Output(varargin{:});
+        output = eompkg.EOM6Output(varargin{:});
     end
 end
             

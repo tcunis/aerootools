@@ -1,4 +1,4 @@
-classdef EOM3Output < EOMvector
+classdef EOM3Output < eompkg.EOMvector
 % Outputs of the 3-DOF equations of motion of the Cumulus aircraft.
 %
 %% About
@@ -16,7 +16,7 @@ classdef EOM3Output < EOMvector
 
 methods
     function obj = EOM3Output(varargin)
-        obj@EOMvector([], varargin{:});
+        obj@eompkg.EOMvector([], varargin{:});
     end
     
     function c = lon(Y)
@@ -32,10 +32,10 @@ methods (Static, Access=protected)
     function [tf,default] = check(obj, ~, varargin)
         % Overriding EOMvector.check
         if isempty(obj)
-            obj = EOM3Output;
+            obj = eompkg.EOM3Output;
         end
         
-        [tf,default] = check@EOMvector(obj, zeros(2,1), varargin{:});
+        [tf,default] = check@eompkg.EOMvector(obj, zeros(2,1), varargin{:});
     end
 end
 

@@ -1,4 +1,4 @@
-classdef EOM3Inputs < EOMvector
+classdef EOM3Inputs < eompkg.EOMvector
 % Inputs of the longitudinal equations of motion of the Cumulus aircraft.
 %
 %% About
@@ -20,7 +20,7 @@ end
 methods
     function obj = EOM3Inputs(varargin)
         % 3-DOF input vector [eta | F].
-        obj@EOMvector([],varargin{:});
+        obj@eompkg.EOMvector([],varargin{:});
     end
     
     function in = eta(U)
@@ -36,10 +36,10 @@ methods (Static, Access=protected)
     function [tf,default] = check(obj, ~, varargin)
         % Overriding EOMvector.check
         if isempty(obj)
-            obj = EOM3Inputs;
+            obj = eompkg.EOM3Inputs;
         end
         
-        [tf,default] = check@EOMvector(obj, zeros(2,1), varargin{:});
+        [tf,default] = check@eompkg.EOMvector(obj, zeros(2,1), varargin{:});
     end
 end
 

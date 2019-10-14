@@ -1,4 +1,4 @@
-classdef EOM6Attitude < EOMvector & RealFunctions
+classdef EOM6Attitude < eompkg.EOMvector & eompkg.RealFunctions
 % Attitude vector for 6-DOF equations of motion of the Cumulus aircraft.
 %
 %% About
@@ -20,7 +20,7 @@ end
 methods
     function obj = EOM6Attitude(varargin)
         % attitude vector [phi theta psi]
-        obj@EOMvector(zeros(3,1),varargin{:});
+        obj@eompkg.EOMvector(zeros(3,1),varargin{:});
     end
     
     function c = phi(Phi)
