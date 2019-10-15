@@ -1,4 +1,4 @@
-classdef EOM3States < eompkg.EOMvector
+classdef EOM3States < aerootools.pkg.EOMvector
 % States of the longitudinal equations of motion of the Cumulus aircraft.
 %
 %% About
@@ -20,7 +20,7 @@ end
 methods
     function obj = EOM3States(varargin)
         % 3-DOF state vector [V alpha q Theta].
-        obj@eompkg.EOMvector([],varargin{:});
+        obj@aerootools.pkg.EOMvector([],varargin{:});
     end
     
     function st = V(X)
@@ -48,10 +48,10 @@ methods (Static, Access=protected)
     function [tf,default] = check(obj, ~, varargin)
         % Overriding EOMvector.check
         if isempty(obj)
-            obj = eompkg.EOM3States;
+            obj = aerootools.pkg.EOM3States;
         end
         
-        [tf,default] = check@eompkg.EOMvector(obj, [1; zeros(3,1)], varargin{:});
+        [tf,default] = check@aerootools.pkg.EOMvector(obj, [1; zeros(3,1)], varargin{:});
     end
 end
 

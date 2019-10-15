@@ -1,4 +1,4 @@
-classdef EOM6Inputs < eompkg.EOMvector & eompkg.EOM3Inputs
+classdef EOM6Inputs < aerootools.pkg.EOMvector & aerootools.pkg.EOM3Inputs
 % Inputs of the 6-DOF equations of motion of the Cumulus aircraft.
 %
 %% About
@@ -19,17 +19,18 @@ end
 
 methods
     function obj = EOM6Inputs(varargin)
-        if nargin == 1 && isa(varargin{1},'EOM6Inputs')
+        import aerootools.pkg.EOM3Inputs
+        if nargin == 1 && isa(varargin{1},'aerootools.pkg.EOM6Inputs')
             % nothing to do
-        elseif any(eompkg.EOM3Inputs.check([],[],varargin{:}) == [1,2,4])
+        elseif any(EOM3Inputs.check([],[],varargin{:}) == [1,2,4])
             % [eta T]
-            U3 = eompkg.EOM3Inputs(varargin{:});
+            U3 = EOM3Inputs(varargin{:});
             
             varargin = {[[0; eta(U3); 0]; F(U3)]};
         end
         
         % 6-DOF input vector [xi eta zi | F].
-        obj@eompkg.EOMvector([],varargin{:});
+        obj@aerootools.pkg.EOMvector([],varargin{:});
     end
     
     function in = xi(U)
@@ -57,7 +58,7 @@ methods (Static, Access=protected)
     function [tf,default] = check(obj, ~, varargin)
         % Overriding EOM3Inputs.check
         
-        [tf,default] = check@eompkg.EOMvector(obj,zeros(4,1),varargin{:});
+        [tf,default] = check@aerootools.pkg.EOMvector(obj,zeros(4,1),varargin{:});
     end
 end
 

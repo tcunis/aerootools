@@ -1,4 +1,4 @@
-classdef EOM6Output < eompkg.EOMvector & eompkg.EOM3Output
+classdef EOM6Output < aerootools.pkg.EOMvector & aerootools.pkg.EOM3Output
 % Outputs of the 6-DOF equations of motion of the Cumulus aircraft.
 %
 %% About
@@ -16,16 +16,17 @@ classdef EOM6Output < eompkg.EOMvector & eompkg.EOM3Output
 
 methods
     function obj = EOM6Output(varargin)
-        if nargin == 1 && isa(varargin{1},'EOM6Output')
+        import aerootools.pkg.EOM3Output
+        if nargin == 1 && isa(varargin{1},'aerootools.pkg.EOM6Output')
             % nothing to do
-        elseif any(eompkg.EOM3Output.check([],[],varargin{:}) == [1,2,4])
+        elseif any(EOM3Output.check([],[],varargin{:}) == [1,2,4])
             % [lon alt]
-            Y3 = eompkg.EOM3Output(varargin{:});
+            Y3 = EOM3Output(varargin{:});
             
             varargin = {[lon(Y3); 0; -alt(Y3)]};
         end
         
-        obj@eompkg.EOMvector([], varargin{:});
+        obj@aerootools.pkg.EOMvector([], varargin{:});
     end
     
     function c = xg(Y)
@@ -62,10 +63,10 @@ methods (Static, Access=protected)
     function [tf,default] = check(obj, ~, varargin)
         % Overriding EOM3Output.check
         if isempty(obj)
-            obj = eompkg.EOM6Output;
+            obj = aerootools.pkg.EOM6Output;
         end
         
-        [tf,default] = check@eompkg.EOMvector(obj,zeros(3,1),varargin{:});
+        [tf,default] = check@aerootools.pkg.EOMvector(obj,zeros(3,1),varargin{:});
     end
 end
 

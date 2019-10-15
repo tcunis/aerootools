@@ -1,4 +1,4 @@
-classdef BasicParameters < eompkg.EOMvector
+classdef BasicParameters < aerootools.pkg.EOMvector
 % Basic parameters for equations of motion.
 %
 %% About
@@ -16,7 +16,7 @@ end
 methods
     function obj = BasicParameters(varargin)
         % Default parameters.
-        obj@eompkg.EOMvector([],varargin{:});
+        obj@aerootools.pkg.EOMvector([],varargin{:});
     end
 end
 

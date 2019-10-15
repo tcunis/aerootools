@@ -1,4 +1,4 @@
-classdef EOM6BodyRate < eompkg.EOMvector
+classdef EOM6BodyRate < aerootools.pkg.EOMvector
 % Body rate vector for 6-DOF equations of motion of the Cumulus aircraft.
 %
 %% About
@@ -20,7 +20,7 @@ end
 methods
     function obj = EOM6BodyRate(varargin)
         % body rate vector [p q r]
-        obj@eompkg.EOMvector(zeros(3,1),varargin{:});
+        obj@aerootools.pkg.EOMvector(zeros(3,1),varargin{:});
     end
     
     function c = p(omega)

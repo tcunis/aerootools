@@ -1,4 +1,4 @@
-classdef (Abstract) EOM3 < eompkg.RealFunctions %handle
+classdef (Abstract) EOM3 < aerootools.pkg.RealFunctions %handle
 % 3-degrees-of-freedom (longitudinal) equations of motion.
 %
 %% About
@@ -94,24 +94,24 @@ methods (Static)
     function states = X(varargin)
         % Longitudinal state vector
         % X = [V gamma q alpha]
-        states = eompkg.EOM3States(varargin{:});
+        states = aerootools.pkg.EOM3States(varargin{:});
     end
     
     function inputs = U(varargin)
         % Longitudinal input vector
         % U = [eta F]
-        inputs = eompkg.EOM3Inputs(varargin{:});
+        inputs = aerootools.pkg.EOM3Inputs(varargin{:});
     end
     
     function par = mu(varargin)
         % Basic parameters
-        par = eompkg.BasicParameters(varargin{:});
+        par = aerootools.pkg.BasicParameters(varargin{:});
     end
     
     function output = Y(varargin)
         % Longitudinal outputs
         % Y = d[lon alt]/dt
-        output = eompkg.EOM3Output(varargin{:});
+        output = aerootools.pkg.EOM3Output(varargin{:});
     end
 end
 

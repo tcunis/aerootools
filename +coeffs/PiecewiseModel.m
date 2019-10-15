@@ -1,4 +1,4 @@
-classdef (Abstract) PiecewiseModel < aerocoeffs.AbstractAeroModel & aerocoeffs.AeroXZModel
+classdef (Abstract) PiecewiseModel < aerootools.coeffs.AbstractAeroModel & aerootools.coeffs.AeroXZModel
 % Abstract super-class of piece-wise defined aerodynamic models.
 %
 %% About

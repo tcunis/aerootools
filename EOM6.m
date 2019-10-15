@@ -1,4 +1,4 @@
-classdef (Abstract) EOM6 < EOM3
+classdef (Abstract) EOM6 < aerootools.EOM3
 % 6-degrees of freedom (6-DOF) equations of motion.
 %
 %% About
@@ -113,7 +113,7 @@ methods (Static)
         % X = [uA vA wA | p q r | Phi Theta Psi]
         %
         % Overriding EOM3.X
-        states = eompkg.EOM6States(varargin{:});
+        states = aerootools.pkg.EOM6States(varargin{:});
     end
     
     function inputs = U(varargin)
@@ -121,13 +121,13 @@ methods (Static)
         % U = [xi eta zeta | F]
         %
         % Overriding EOM3.U
-        inputs = eompkg.EOM6Inputs(varargin{:});
+        inputs = aerootools.pkg.EOM6Inputs(varargin{:});
     end
     
     function output = Y(varargin)
         % 6-DOF outputs
         % Y = d[xg yg zg]/dt
-        output = eompkg.EOM6Output(varargin{:});
+        output = aerootools.pkg.EOM6Output(varargin{:});
     end
 end
             
