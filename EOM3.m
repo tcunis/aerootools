@@ -1,4 +1,4 @@
-classdef (Abstract) EOM3 < aerootools.pkg.RealFunctions %handle
+classdef (Abstract) EOM3 < aerootools.pkg.RealFunctions
 % 3-degrees-of-freedom (longitudinal) equations of motion.
 %
 %% About
@@ -189,7 +189,7 @@ methods (Access=protected)
     % normalized pitch rate
         c   = obj.AC.c;
         
-        ang = q(X)*c.*Vinv(X);
+        ang = q(X)*c.*obj.Vinv(X);
     end
     
     function iv = Vinv(obj, X, varargin)
