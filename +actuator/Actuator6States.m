@@ -16,7 +16,7 @@ methods (Static, Access=protected)
         
         if isempty(varargin)
             tf = 0;
-        elseif length(varargin) == 1 && isa(varargin{1}, class(obj))
+        elseif length(varargin) == 1 && isa(varargin{1}, 'eompkg.EOM6Inputs')
             tf = 1;
         elseif length(varargin) == 1 && size(varargin{1},1) <= length(default)
             tf = 2;

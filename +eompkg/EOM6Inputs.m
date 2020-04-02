@@ -19,7 +19,7 @@ end
 
 methods
     function obj = EOM6Inputs(varargin)
-        if nargin == 1 && isa(varargin{1},'EOM6Inputs')
+        if nargin == 1 && isa(varargin{1},'eompkg.EOM6Inputs')
             % nothing to do
         elseif any(eompkg.EOM3Inputs.check([],[],varargin{:}) == [1,2,4])
             % [eta T]

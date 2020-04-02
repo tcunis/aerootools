@@ -37,7 +37,7 @@ end
 
 methods
     function obj = EOM6AbstractStates(varargin)
-        if nargin == 1 && isa(varargin{1},'Abstract6States')
+        if nargin == 1 && isa(varargin{1},'eompkg.EOM6AbstractStates')
             % nothing to do
         elseif eompkg.EOM3States.check([],[],varargin{:}) > 0
             % [VA gamma q alpha]
