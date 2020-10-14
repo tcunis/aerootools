@@ -48,11 +48,7 @@ methods
         %
         %   xdot = f(x,u,mu)
         %
-        varargin = {
-            obj.X(varargin{1})
-            obj.U(varargin{2})
-            obj.mu(varargin{3:end})
-        };
+        varargin = obj.parse(varargin);
         
         func = [
             obj.Vdot(varargin{:})
@@ -69,11 +65,7 @@ methods
         %   yout = g(x,u,mu)
         %
         % See F
-        varargin = {
-            obj.X(varargin{1})
-            obj.U(varargin{2})
-            obj.mu(varargin{3:end})
-        };
+        varargin = obj.parse(varargin);
 
         out = [
             obj.londot(varargin{:})
@@ -88,6 +80,17 @@ methods (Access=protected,Abstract)
     CL = Clift(obj, X, U, varargin);
     
     CM = Cm(obj, X, U, varargin);
+end
+
+methods (Access=protected)
+    function argout = parse(obj,argin)
+        % Parse arguments.
+        argout = {
+            obj.X(argin{1})
+            obj.U(argin{2})
+            obj.mu(argin{3:end})
+        };
+    end
 end
 
 methods (Static)
@@ -118,30 +121,26 @@ end
 methods
     function acc = Vdot(obj, X, U, varargin)
     % change in speed
-        rho = obj.AC.rho;
-        S   = obj.AC.S;
         m   = obj.AC.m;
         g   = obj.AC.g;
     
         acc =                                                           ...
         (                                                               ...
             obj.thrust(X,U,varargin{:}).*obj.cos(alpha(X))                                          ...
-            - 0.5*rho*V(X).^2*S.*obj.Cdrag(X,U,varargin{:})                           ...
+            - obj.drag(X,U,varargin{:})                           ...
             - m*g*obj.sin(gamma(X))                                         ...
         )/m;    
     end
     
     function ang = gammadot(obj, X, U, varargin)
     % change in flight-path angle
-        rho = obj.AC.rho;
-        S   = obj.AC.S;
         m   = obj.AC.m;
         g   = obj.AC.g;
     
         ang =                                                           ...
         (                                                               ...
             obj.thrust(X,U,varargin{:}).*obj.sin(alpha(X))                                          ...
-            + 0.5*rho*V(X).^2*S.*obj.Clift(X,U,varargin{:})                           ...
+            + obj.lift(X,U,varargin{:})                           ...
             - m*g*obj.cos(gamma(X))                                         ...
         ).*obj.Vinv(X)/m;
     end
@@ -181,6 +180,22 @@ methods
 end
 
 methods (Access=protected)
+    function force = lift(obj, X, varargin)
+        % lift force
+        rho = obj.AC.rho;
+        S = obj.AC.S;
+        
+        force = 0.5*rho*V(X).^2*S.*obj.Clift(X,varargin{:});
+    end
+    
+    function force = drag(obj, X, varargin)
+        % drag force
+        rho = obj.AC.rho;
+        S = obj.AC.S;
+        
+        force = 0.5*rho*V(X).^2*S.*obj.Cdrag(X,varargin{:});
+    end
+    
     function force = thrust(~, ~, U, varargin)
     % thrust force
         force = F(U);
