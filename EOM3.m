@@ -189,7 +189,7 @@ methods (Access=protected)
     % normalized pitch rate
         c   = obj.AC.c;
         
-        ang = q(X)*c.*obj.Vinv(X);
+        ang = q(X)*c.*obj.Vinv(X)/2;
     end
     
     function iv = Vinv(obj, X, varargin)
