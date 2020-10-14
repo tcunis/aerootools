@@ -158,15 +158,25 @@ methods
         ang = q(X);
     end
     
-    function vel = londot(obj, X, varargin)
+    function vel = londot(obj, X, U, varargin)
         % change of longitudinal position
         % in earth-fixed axis system
-        vel = V(X).*obj.cos(gamma(X));
+        vel = V(X).*obj.cos(gamma(X)).*ones(1,size(U,2));
     end
     
-    function vel = altdot(obj, X, varargin)
+    function vel = altdot(obj, X, U, varargin)
         % change of altitude
-        vel = V(X).*obj.sin(gamma(X));
+        vel = V(X).*obj.sin(gamma(X)).*ones(1,size(U,2));
+    end
+    
+    function nz = loadfactor(obj, X, varargin)
+        % load factor
+        w = obj.AC.w;
+        
+        nz = ( ...
+            obj.lift(X,varargin{:}).*obj.cos(alpha(X)) ...
+            + obj.drag(X,varargin{:}).*obj.sin(alpha(X)) ...
+        )/w;
     end
 end
 
