@@ -1,4 +1,4 @@
-function [x, p, fval] = findtrim(f, X0, P0, cond, opt, bnds)
+function [x, p, fval, flag] = findtrim(f, X0, P0, cond, opt, bnds)
 % Finds trim condition under constraints.
 %
 %% Usage and description
@@ -57,7 +57,9 @@ if isempty(opt)
     problem.options = optimoptions('fsolve', 'Algorithm', 'Levenberg-marquardt');
 
     % find trim condition for f(x,p) == 0 & g(x,p) == 0
-    [xp0,fval] = fsolve(problem);
+    [xp0,Fval,flag] = fsolve(problem);
+    
+    fval = Fval(end-n+1:end);
 else
     % optimization problem structure
     problem.objective = @(xp) opt(X(xp), P(xp));
@@ -69,7 +71,7 @@ else
     problem.options = optimoptions('fmincon');
     
     % find optimal trim condition
-    [xp0,fval] = fmincon(problem);
+    [xp0,fval,flag] = fmincon(problem);
 end
 
 x = X(xp0);
