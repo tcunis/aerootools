@@ -49,13 +49,8 @@ methods
         %   xdot = f(x,u,mu)
         %
         varargin = obj.parse(varargin);
-        
-        func = [
-            obj.Vdot(varargin{:})
-            obj.gammadot(varargin{:})
-            obj.qdot(varargin{:})
-            obj.Thetadot(varargin{:}) - obj.gammadot(varargin{:})
-        ];
+
+        func = obj.sysfun(varargin{:});
     end
     
     function out = g(obj, varargin)
@@ -67,10 +62,7 @@ methods
         % See F
         varargin = obj.parse(varargin);
 
-        out = [
-            obj.londot(varargin{:})
-            obj.altdot(varargin{:})
-        ];
+        out = obj.outfun(varargin{:});
     end    
 end
 
@@ -83,6 +75,24 @@ methods (Access=protected,Abstract)
 end
 
 methods (Access=protected)
+    function func = sysfun(obj, varargin)
+        % System function.
+        func = [
+            obj.Vdot(varargin{:})
+            obj.gammadot(varargin{:})
+            obj.qdot(varargin{:})
+            obj.Thetadot(varargin{:}) - obj.gammadot(varargin{:})
+        ];
+    end
+    
+    function out = outfun(obj, varargin)
+        % Output function.
+        out = [
+            obj.londot(varargin{:})
+            obj.altdot(varargin{:})
+        ];
+    end
+    
     function argout = parse(obj,argin)
         % Parse arguments.
         argout = {
@@ -118,45 +128,45 @@ methods (Static)
     end
 end
 
-methods
-    function acc = Vdot(obj, X, U, varargin)
+methods (Access=protected)
+    function acc = Vdot(obj, varargin)
     % change in speed
         m   = obj.AC.m;
         g   = obj.AC.g;
     
-        acc =                                                           ...
-        (                                                               ...
-            obj.thrust(X,U,varargin{:}).*obj.cos(alpha(X))                                          ...
-            - obj.drag(X,U,varargin{:})                           ...
-            - m*g*obj.sin(gamma(X))                                         ...
-        )/m;    
+        acc = ( ...
+            obj.thrust(varargin{:}).*obj.cos(obj.attack(varargin{:})) ...
+            - obj.drag(varargin{:}) ...
+            - m*g*obj.sin(obj.inclination(varargin{:})) ...
+        )/m;
     end
     
-    function ang = gammadot(obj, X, U, varargin)
+    function ang = gammadot(obj, varargin)
     % change in flight-path angle
         m   = obj.AC.m;
         g   = obj.AC.g;
     
-        ang =                                                           ...
-        (                                                               ...
-            obj.thrust(X,U,varargin{:}).*obj.sin(alpha(X))                                          ...
-            + obj.lift(X,U,varargin{:})                           ...
-            - m*g*obj.cos(gamma(X))                                         ...
-        ).*obj.Vinv(X)/m;
+        ang = ( ...
+            obj.thrust(varargin{:}).*obj.sin(obj.attack(varargin{:})) ...
+            + obj.lift(varargin{:}) ...
+            - m*g*obj.cos(obj.inclination(varargin{:})) ...
+        ).*obj.Vinv(varargin{1})/m;
     end
 
-    function ang = qdot(obj, X, U, varargin)
+    function ang = qdot(obj, varargin)
     % change in pitch rate
         Iy = obj.AC.I(2,2);
         
-        ang = obj.M(X, U, varargin{:})/Iy;
+        ang = obj.M(varargin{:})/Iy;
     end
                            
     function ang = Thetadot(~, X, varargin)
     % change in pitch angle
         ang = q(X);
     end
-    
+end
+
+methods
     function vel = londot(obj, X, U, varargin)
         % change of longitudinal position
         % in earth-fixed axis system
@@ -168,55 +178,70 @@ methods
         vel = V(X).*obj.sin(gamma(X)).*ones(1,size(U,2));
     end
     
-    function nz = loadfactor(obj, X, varargin)
+    function nz = loadfactor(obj, varargin)
         % load factor
         w = obj.AC.w;
         
         nz = ( ...
-            obj.lift(X,varargin{:}).*obj.cos(alpha(X)) ...
-            + obj.drag(X,varargin{:}).*obj.sin(alpha(X)) ...
+            obj.lift(varargin{:}).*obj.cos(obj.attack(varargin{:})) ...
+            + obj.drag(varargin{:}).*obj.sin(obj.attack(varargin{:})) ...
         )/w;
-    end
-end
-
-methods (Access=protected)
-    function force = lift(obj, X, varargin)
-        % lift force
-        rho = obj.AC.rho;
-        S = obj.AC.S;
-        
-        force = 0.5*rho*V(X).^2*S.*obj.Clift(X,varargin{:});
-    end
-    
-    function force = drag(obj, X, varargin)
-        % drag force
-        rho = obj.AC.rho;
-        S = obj.AC.S;
-        
-        force = 0.5*rho*V(X).^2*S.*obj.Cdrag(X,varargin{:});
     end
     
     function force = thrust(~, ~, U, varargin)
-    % thrust force
+        % thrust force
         force = F(U);
     end
     
-    function moment = M(obj, X, U, varargin)
-    % Pitch moment
-        rho = obj.AC.rho;
-        S   = obj.AC.S;
-        c   = obj.AC.c;
-        
-        moment = 0.5*rho*V(X).^2*S*c.*obj.Cm(X,U,varargin{:});
+    function speed = airspeed(~, X, varargin)
+        % Speed with respective to air.
+        speed = V(X);
+    end
+    
+    function ang = inclination(~, X, varargin)
+        % Path inclination angle with respective to air.
+        ang = gamma(X);
+    end
+    
+    function ang = attack(~, X, varargin)
+        % Angle of attack.
+        ang = alpha(X);
     end
     
     function ang = qhat(obj, X, varargin)
     % normalized pitch rate
         c   = obj.AC.c;
         
-        ang = q(X)*c.*obj.Vinv(X)/2;
+        ang = c*q(X).*obj.inv(obj.airspeed(X,varargin{:}))/2;
+    end
+end
+
+methods (Access=protected)
+    function force = lift(obj, varargin)
+        % lift force
+        rho = obj.AC.rho;
+        S = obj.AC.S;
+        
+        force = 0.5*rho*S*obj.airspeed(varargin{:}).^2.*obj.Clift(varargin{:});
     end
     
+    function force = drag(obj, varargin)
+        % drag force
+        rho = obj.AC.rho;
+        S = obj.AC.S;
+        
+        force = 0.5*rho*S*obj.airspeed(varargin{:}).^2.*obj.Cdrag(varargin{:});
+    end
+    
+    function moment = M(obj, varargin)
+        % Pitch moment
+        rho = obj.AC.rho;
+        S   = obj.AC.S;
+        c   = obj.AC.c;
+        
+        moment = 0.5*rho*S*c*obj.airspeed(varargin{:}).^2.*obj.Cm(varargin{:});
+    end
+        
     function iv = Vinv(obj, X, varargin)
     % inverse air speed
         iv = obj.inv(V(X));
