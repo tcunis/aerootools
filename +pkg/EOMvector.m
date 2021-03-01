@@ -127,6 +127,18 @@ methods
         i = size(obj.v,k);
     end
     
+    function V = horzcat(A,B,varargin)
+        % Horizontal concatenation.
+        if ~isempty(varargin)
+            B = horzcat(B,varargin{:});
+        end
+        
+        vA = double(A);
+        vB = double(B);
+        
+        V = horzcat(vA,vB);
+    end
+    
     function E = subsref(obj,s)
         % See SUBSREF
         
