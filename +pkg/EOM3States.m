@@ -1,12 +1,12 @@
 classdef EOM3States < aerootools.pkg.EOMvector
-% States of the longitudinal equations of motion of the Cumulus aircraft.
+% States of the longitudinal equations.
 %
 %% About
 %
 % * Author:     Torbjoern Cunis
 % * Email:      <mailto:torbjoern.cunis@onera.fr>
 % * Created:    2018-10-08
-% * Changed:    2018-10-08
+% * Changed:    2022-02-21
 %
 %% See also
 %

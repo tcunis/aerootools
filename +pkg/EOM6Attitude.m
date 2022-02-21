@@ -1,12 +1,12 @@
-classdef EOM6Attitude < aerootools.pkg.EOMvector & aerootools.pkg.RealFunctions
-% Attitude vector for 6-DOF equations of motion of the Cumulus aircraft.
+classdef EOM6Attitude < aerootools.pkg.EOMvector & aerootools.pkg.RotationMatrices
+% Attitude vector for 6-DOF equations of motion.
 %
 %% About
 %
 % * Author:     Torbjoern Cunis
 % * Email:      <mailto:torbjoern.cunis@onera.fr>
 % * Created:    2018-10-09
-% * Changed:    2018-10-09
+% * Changed:    2022-02-21
 %
 %% See also
 %
@@ -35,7 +35,7 @@ methods
         c = index(Phi,3);
     end
     
-    %% Transformation matrizes
+    %% Transformation matrices
     function M = g2f(obj)
         % rotation from earth-fixed to body-fixed
         M = obj.rot(phi(obj),1)*obj.rot(-theta(obj),2)*obj.rot(psi(obj),3);
@@ -48,23 +48,6 @@ methods
             0   obj.cos(phi(obj))                      -obj.sin(phi(obj))
             0   obj.sin(phi(obj))*obj.sec(theta(obj))   obj.cos(phi(obj))*obj.sec(theta(obj))
         ];
-    end
-end
-
-methods (Access=private)
-    function M = rot(obj,a,k)
-        % Creates rotation matrix for a around axis k.
-        M = diag([1 obj.cos(a) 1 obj.cos(a) 1]);
-        M(2,4) =  obj.sin(a);
-        M(4,2) = -obj.sin(a);
-
-        I = [k==1 true k==2 true k==3];
-        
-        % multipoly does not support logical indexing...
-        idx = 1:length(M);
-        idx = idx(I);
-        
-        M = M(idx,idx);
     end
 end
     
